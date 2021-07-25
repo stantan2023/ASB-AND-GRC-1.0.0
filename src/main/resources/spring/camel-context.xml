@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       https://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean
+        class="tr.com.anadolubank.grpc.ASBANDGRCHelloResponseProcessor" id="ASBANDGRCHelloResponseProcessor"/>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route id="simple-route">
+            <from id="_fromgrpc" uri="grpc://localhost:1101/tr.com.anadolubank.grpc.proto.HelloService?consumerStrategy=PROPAGATION&amp;exchangePattern=InOut&amp;negotiationType=TLS&amp;keyCertChainResource=classpath:certs/server_certificate.pem&amp;keyResource=classpath:certs/server_private_key.key&amp;trustCertCollectionResource=classpath:certs/ca_certificate.pem&amp;authenticationType=JWT&amp;jwtAlgorithm=HMAC256&amp;jwtSecret=TUNgUL5Bs8kjVvWnPYwPJhaM"/>
+            <log id="route-log" message="ASB-AND-GRC-1.0.0 OperationName: ${header.CamelGrpcMethodName}"/>
+            <process id="_response" ref="ASBANDGRCHelloResponseProcessor"/>
+        </route>
+    </camelContext>
+</beans>
